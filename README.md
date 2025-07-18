@@ -1,15 +1,15 @@
-##Integrantes 
+## Integrantes 
 
 Mateo Lotero Tobon
 Miguel Angel Castiblanco
 Carlos Forero
 
-##Usuarios
+## Usuarios
 
-#Usuario Normal
+# Usuario Normal
 email: user@restaurant.com password: password123
 
-#Administrador
+# Administrador
 email: admin@restaurant.com password: password123
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
