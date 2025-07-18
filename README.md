@@ -1,7 +1,7 @@
 # Integrantes 
 
-Mateo Lotero Tobon
-Miguel Angel Castiblanco
+Mateo Lotero Tobon/
+Miguel Angel Castiblanco/
 Carlos Forero
 
 # Usuarios
