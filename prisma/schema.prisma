@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relaciones
+  createdProducts Product[] @relation("CreatedBy")
+  movements       Movement[]
+
+  @@map("users")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  price       Float
+  stock       Int      @default(0)  // Cambio de balance a stock (más claro)
+  imageUrl    String?
+  category    Category @default(ALMUERZO)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relaciones
+  createdBy   User       @relation("CreatedBy", fields: [createdById], references: [id])
+  createdById String
+  movements   Movement[]
+
+  @@map("products")
+}
+
+model Movement {
+  id        String      @id @default(cuid())
+  type      MovementType
+  quantity  Int         // Cambio a Int para unidades de productos
+  date      DateTime    @default(now())
+  createdAt DateTime    @default(now())
+  
+  // Relaciones
+  product      Product @relation(fields: [productId], references: [id])
+  productId    String
+  executedBy   User    @relation(fields: [executedById], references: [id])
+  executedById String
+
+  @@map("movements")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum MovementType {
+  ENTRADA
+  SALIDA
+}
+
+enum Category {
+  DESAYUNO
+  ALMUERZO
+  CENA
+  BEBIDA
+  POSTRE
+}
