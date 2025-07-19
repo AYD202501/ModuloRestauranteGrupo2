@@ -122,8 +122,7 @@ export async function POST(request: NextRequest) {
     // Usar transacción para crear movimiento y actualizar stock
     console.log('Iniciando transacción...');
     
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const result = await prisma.$transaction(async (tx: { movement: { create: (arg0: { data: { productId: any; type: any; quantity: number; executedById: any; }; include: { product: { select: { name: boolean; }; }; executedBy: { select: { name: boolean; email: boolean; }; }; }; }) => any; }; product: { update: (arg0: { where: { id: any; }; data: { stock: any; }; }) => any; }; }) => {
+    const result = await prisma.$transaction(async (tx) => {
       // Crear movimiento
       console.log('Creando movimiento...');
       const movement = await tx.movement.create({
