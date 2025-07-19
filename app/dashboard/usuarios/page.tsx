@@ -100,9 +100,10 @@ export default function UsuariosPage() {
       // Limpiar mensaje de éxito después de 3 segundos
       setTimeout(() => setSuccess(''), 3000);
       
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error:', error);
-      setError(error.message || 'Error al actualizar usuario');
+      const message = (error instanceof Error) ? error.message : 'Error al actualizar usuario';
+      setError(message);
     } finally {
       setIsSubmitting(false);
     }

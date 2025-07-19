@@ -63,16 +63,16 @@ export async function PATCH(request: NextRequest) {
     });
 
     return NextResponse.json(updatedUser);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error updating user role:', error);
-    
-    if (error.code === 'P2025') {
-      return NextResponse.json(
-        { error: 'Usuario no encontrado' },
-        { status: 404 }
-      );
+    if (typeof error === 'object' && error !== null && 'code' in error) {
+      if ((error as { code?: string }).code === 'P2025') {
+        return NextResponse.json(
+          { error: 'Usuario no encontrado' },
+          { status: 404 }
+        );
+      }
     }
-
     return NextResponse.json(
       { error: 'Error al actualizar usuario' },
       { status: 500 }

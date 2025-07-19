@@ -2,7 +2,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Users, Package, BarChart3, LogOut, User } from "lucide-react";
+import {Users, Package, BarChart3, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -13,7 +13,7 @@ interface SidebarProps {
   userEmail: string;
 }
 
-export function Sidebar({ userRole, userName, userEmail }: SidebarProps) {
+export function Sidebar({ userRole, userName }: SidebarProps) {
   const pathname = usePathname();
 
   const menuItems = [

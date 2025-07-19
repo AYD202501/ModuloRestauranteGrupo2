@@ -18,6 +18,20 @@ interface LowStockProduct {
   stock: number;
 }
 
+interface Product {
+  id: string;
+  name: string;
+  stock: number;
+  price: number;
+}
+
+interface Movement {
+  id: string;
+  type: string;
+  quantity: number;
+  date: string;
+}
+
 export default function DashboardPage() {
   const [stats, setStats] = useState<Stats>({
     totalProducts: 0,
@@ -51,21 +65,21 @@ export default function DashboardPage() {
       
       // Calcular estadísticas
       const today = new Date().toDateString();
-      const todayMovements = movements.filter((m: any) => 
+      const todayMovements = movements.filter((m: Movement) => 
         new Date(m.date).toDateString() === today
       );
       
       // Productos con bajo stock (menos de 50 unidades)
       const lowStock = products
-        .filter((p: any) => p.stock < 50)
-        .sort((a: any, b: any) => a.stock - b.stock)
+        .filter((p: Product) => p.stock < 50)
+        .sort((a: Product, b: Product) => a.stock - b.stock)
         .slice(0, 5)
-        .map((p: any) => ({ name: p.name, stock: p.stock }));
+        .map((p: Product) => ({ name: p.name, stock: p.stock }));
       
       // Simular ventas (en una app real vendría de otra API)
       const estimatedSales = todayMovements
-        .filter((m: any) => m.type === 'SALIDA')
-        .reduce((total: number, m: any) => total + (m.quantity * 15), 0); // $15 promedio por item
+        .filter((m: Movement) => m.type === 'SALIDA')
+        .reduce((total: number, m: Movement) => total + (m.quantity * 15), 0); // $15 promedio por item
       
       setStats({
         totalProducts: products.length,

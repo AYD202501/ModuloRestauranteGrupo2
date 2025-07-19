@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BarChart3, Plus, TrendingUp, TrendingDown, Package, RefreshCw } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 interface Product {
   id: string;
@@ -54,76 +54,73 @@ export default function TransaccionesPage() {
     executedById: ""
   });
 
-  // Cargar datos al montar el componente
-  useEffect(() => {
-    fetchProducts();
-    fetchUsers();
-    fetchMovements();
-  }, []);
-
-  // Cargar movimientos cuando cambia el producto seleccionado
-  useEffect(() => {
-    fetchMovements();
-  }, [selectedProduct]);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const response = await fetch('/api/users');
       if (!response.ok) throw new Error('Error al cargar usuarios');
-      
-      const data = await response.json();
+      const data: User[] = await response.json();
       setUsers(data);
-      
       // Seleccionar el primer usuario por defecto
       if (data.length > 0 && !selectedUser) {
         setSelectedUser(data[0].id);
         setNewMovement(prev => ({ ...prev, executedById: data[0].id }));
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error:', error);
-      setError('Error al cargar usuarios');
+      const message = (error instanceof Error) ? error.message : 'Error al cargar usuarios';
+      setError(message);
     }
-  };
+  }, [selectedUser]);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       const response = await fetch('/api/products');
       if (!response.ok) throw new Error('Error al cargar productos');
-      
       const data = await response.json();
-      setProducts(data.map((p: any) => ({
+      setProducts(data.map((p: Product) => ({
         id: p.id,
         name: p.name,
         stock: p.stock,
         price: p.price
       })));
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error:', error);
-      setError('Error al cargar productos');
+      const message = (error instanceof Error) ? error.message : 'Error al cargar productos';
+      setError(message);
     }
-  };
+  }, []);
 
-  const fetchMovements = async () => {
+  const fetchMovements = useCallback(async () => {
     try {
       setIsLoading(true);
       setError('');
-      
       const url = selectedProduct 
         ? `/api/movements?productId=${selectedProduct}`
         : '/api/movements';
-      
       const response = await fetch(url);
       if (!response.ok) throw new Error('Error al cargar movimientos');
-      
-      const data = await response.json();
+      const data: Movement[] = await response.json();
       setMovements(data);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error:', error);
-      setError('Error al cargar movimientos');
+      const message = (error instanceof Error) ? error.message : 'Error al cargar movimientos';
+      setError(message);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [selectedProduct]);
+
+  // Cargar datos al montar el componente
+  useEffect(() => {
+    fetchProducts();
+    fetchUsers();
+    fetchMovements();
+  }, [fetchProducts, fetchUsers, fetchMovements]);
+
+  // Cargar movimientos cuando cambia el producto seleccionado
+  useEffect(() => {
+    fetchMovements();
+  }, [fetchMovements]);
 
   const handleAddMovement = async () => {
     if (!selectedProduct || newMovement.quantity <= 0 || !newMovement.executedById) {
@@ -182,9 +179,10 @@ export default function TransaccionesPage() {
       // Limpiar mensaje de éxito después de 3 segundos
       setTimeout(() => setSuccess(''), 3000);
       
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('💥 Error completo:', error);
-      setError(error.message || 'Error al crear movimiento');
+      const message = (error instanceof Error) ? error.message : 'Error al crear movimiento';
+      setError(message);
     } finally {
       setIsSubmitting(false);
     }

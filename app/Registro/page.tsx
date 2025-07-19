@@ -3,8 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Undo2 } from "lucide-react";
 
-import  Link  from "next/link";
 import React from "react";
+import Image from 'next/image';
 
 export default function Registro(){
   return (
@@ -70,7 +70,7 @@ export default function Registro(){
         </div>
 
         <div className="w-[804px] h-screen">
-          <img className="w-full h-full object-cover" alt="Food image" src="https://myplate-prod.azureedge.us/sites/default/files/styles/medium/public/2020-11/SkilletPastaDinner_527x323.jpg?itok=QIx-r8dj"/>
+          <Image className="w-full h-full object-cover" alt="Food image" src="https://myplate-prod.azureedge.us/sites/default/files/styles/medium/public/2020-11/SkilletPastaDinner_527x323.jpg?itok=QIx-r8dj"/>
         </div>
       </div>
     </div>

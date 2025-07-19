@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Image from 'next/image';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -30,10 +31,12 @@ export default function Login() {
       <div className="bg-white w-full h-screen relative flex">
         {/* Left side - Image */}
         <div className="w-[932px] h-full relative overflow-hidden">
-          <img
+          <Image
             className="absolute w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             alt="Restaurant food"
             src="https://img.hogar.mapfre.es/wp-content/uploads/2018/09/hamburguesa-sencilla.jpg"
+            width={1920}
+            height={1080}
           />
           {/* Overlay con gradiente */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />

@@ -71,9 +71,10 @@ export default function ProductosPage() {
       
       const data = await response.json();
       setProducts(data);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error:', error);
-      setError('Error al cargar productos');
+      const message = (error instanceof Error) ? error.message : 'Error al cargar productos';
+      setError(message);
     } finally {
       setIsLoading(false);
     }
@@ -125,9 +126,10 @@ export default function ProductosPage() {
       // Limpiar mensaje de éxito después de 3 segundos
       setTimeout(() => setSuccess(''), 3000);
       
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error:', error);
-      setError(error.message || 'Error al crear producto');
+      const message = (error instanceof Error) ? error.message : 'Error al crear producto';
+      setError(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -191,9 +193,10 @@ export default function ProductosPage() {
       
       setTimeout(() => setSuccess(''), 3000);
       
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error:', error);
-      setError(error.message || 'Error al actualizar producto');
+      const message = (error instanceof Error) ? error.message : 'Error al actualizar producto';
+      setError(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -220,9 +223,10 @@ export default function ProductosPage() {
       
       setTimeout(() => setSuccess(''), 3000);
       
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error:', error);
-      setError(error.message || 'Error al eliminar producto');
+      const message = (error instanceof Error) ? error.message : 'Error al eliminar producto';
+      setError(message);
     }
   };
 

@@ -64,17 +64,17 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(product, { status: 201 });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error creating product:', error);
-    
     // Error de duplicado (nombre único)
-    if (error.code === 'P2002') {
-      return NextResponse.json(
-        { error: 'Ya existe un producto con este nombre' },
-        { status: 409 }
-      );
+    if (typeof error === 'object' && error !== null && 'code' in error) {
+      if ((error as { code?: string }).code === 'P2002') {
+        return NextResponse.json(
+          { error: 'Ya existe un producto con este nombre' },
+          { status: 409 }
+        );
+      }
     }
-
     return NextResponse.json(
       { error: 'Error al crear producto' },
       { status: 500 }

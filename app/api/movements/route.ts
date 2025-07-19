@@ -122,7 +122,8 @@ export async function POST(request: NextRequest) {
     // Usar transacción para crear movimiento y actualizar stock
     console.log('Iniciando transacción...');
     
-    const result = await prisma.$transaction(async (tx) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const result = await prisma.$transaction(async (tx: { movement: { create: (arg0: { data: { productId: any; type: any; quantity: number; executedById: any; }; include: { product: { select: { name: boolean; }; }; executedBy: { select: { name: boolean; email: boolean; }; }; }; }) => any; }; product: { update: (arg0: { where: { id: any; }; data: { stock: any; }; }) => any; }; }) => {
       // Crear movimiento
       console.log('Creando movimiento...');
       const movement = await tx.movement.create({
@@ -164,27 +165,25 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(result, { status: 201 });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error creating movement:', error);
-    console.error('Stack trace:', error.stack);
-    
-    // Verificar tipos específicos de error de Prisma
-    if (error.code === 'P2002') {
-      return NextResponse.json(
-        { error: 'Error de duplicado en la base de datos' },
-        { status: 409 }
-      );
+    if (typeof error === 'object' && error !== null && 'code' in error) {
+      if ((error as { code?: string }).code === 'P2002') {
+        return NextResponse.json(
+          { error: 'Error de duplicado en la base de datos' },
+          { status: 409 }
+        );
+      }
+      if ((error as { code?: string }).code === 'P2025') {
+        return NextResponse.json(
+          { error: 'Registro no encontrado' },
+          { status: 404 }
+        );
+      }
     }
-    
-    if (error.code === 'P2025') {
-      return NextResponse.json(
-        { error: 'Registro no encontrado' },
-        { status: 404 }
-      );
-    }
-
+    const message = (error instanceof Error) ? error.message : 'Error al crear movimiento';
     return NextResponse.json(
-      { error: error.message || 'Error al crear movimiento' },
+      { error: message },
       { status: 500 }
     );
   }
