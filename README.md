@@ -1,6 +1,6 @@
 # Integrantes 
 
-Mateo Lotero Tobon/
+Mateo Lotero/
 Miguel Angel Castiblanco/
 Carlos Forero
 
@@ -11,6 +11,18 @@ email: user@restaurant.com password: password123
 
 ## Administrador
 email: admin@restaurant.com password: password123
+
+# Proposito
+
+El proposito del proyecto es hacer una pagina para un restaurante en la cual puedan ver múltiples platillos y ordenarlos, esto por parte de los usuarios. Por parte de los empleados poder manejar los pedidos y cosas como ver el inventario y. por último, por parte del administrador poder manejar los usuarios, ver data sobre las ventas y manejar el inventario.
+
+# Ejecución
+
+Primero y más importante, instalar las dependencias utilizando npm install o el comando equivalente del gestor de paquetes que se este utilizando.
+
+Después de esto se crea el archivo .env y se configura: DATABASE_URL="postgresql://postgres.fuxxymhcrxpuvnkvgxpj:YAxj_F4.b43_rFk@aws-0-us-east-2.pooler.supabase.com:5432/postgres", y se conecta a la base de datos.
+
+Después de esto se ejecuta el comando npm run dev en la términal para iniciar la página web y se le da click a http://localhost:3000 en la terminal
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
