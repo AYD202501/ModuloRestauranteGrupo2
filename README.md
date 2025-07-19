@@ -24,6 +24,10 @@ Después de esto se crea el archivo .env y se configura: DATABASE_URL="postgresq
 
 Después de esto se ejecuta el comando npm run dev en la términal para iniciar la página web y se le da click a http://localhost:3000 en la terminal
 
+# Vercel
+
+https://vercel-grupo2-wrkp.vercel.app
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
